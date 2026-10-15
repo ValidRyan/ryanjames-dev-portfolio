@@ -1,0 +1,21 @@
+{
+ "version": 1,
+ "paragraphs": [
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Phrase: @diamond_left.mwrite"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Limits: @diamond_right.mwrite"
+    }
+   ]
+  }
+ ]
+}

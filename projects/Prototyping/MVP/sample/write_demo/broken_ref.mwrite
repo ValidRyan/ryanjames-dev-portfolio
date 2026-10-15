@@ -1,0 +1,29 @@
+{
+ "version": 1,
+ "paragraphs": [
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Info: @missing_target.mwrite"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Knowledge: @no_such_folder/nothing.txt"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Phrase: @"
+    }
+   ]
+  }
+ ]
+}

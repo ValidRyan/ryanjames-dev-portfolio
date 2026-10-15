@@ -1,0 +1,1 @@
+Ordinary sub-folders of a Store are opaque: this file is never listed.

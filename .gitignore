@@ -1,0 +1,38 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Secrets and local configuration
+.env
+.env.local
+.env.*.local
+
+# Local tool settings and logs
+.claude/settings.local.json
+*.log
+
+# Private project ideation and documentation
+/projects/Ideation/

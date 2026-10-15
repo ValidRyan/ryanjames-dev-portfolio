@@ -1,0 +1,13 @@
+{
+ "version": 1,
+ "paragraphs": [
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Info: the shared leaf: reached twice, never a cycle"
+    }
+   ]
+  }
+ ]
+}

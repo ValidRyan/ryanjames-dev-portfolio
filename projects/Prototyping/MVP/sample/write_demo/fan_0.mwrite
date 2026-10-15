@@ -1,0 +1,29 @@
+{
+ "version": 1,
+ "paragraphs": [
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Phrase: @fan_1.mwrite"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Meaning: @fan_1.mwrite"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Info: @fan_1.mwrite"
+    }
+   ]
+  }
+ ]
+}

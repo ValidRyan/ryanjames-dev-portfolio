@@ -1,0 +1,2 @@
+An operator: a Write can point at this file, but nothing ever opens it.
+The chain ends here.

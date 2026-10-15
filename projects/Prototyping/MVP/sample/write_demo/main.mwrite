@@ -1,0 +1,169 @@
+{
+ "version": 1,
+ "paragraphs": [
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "# SAP Modifier demo: press Refresh, then F5 (Run), and read the tree on the right.",
+     "tags": {
+      "italic": "right"
+     }
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Phrase:",
+     "tags": {
+      "bold": true
+     }
+    },
+    {
+     "text": " @chain_a.mwrite"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Limits:",
+     "tags": {
+      "bold": true,
+      "italic": "right"
+     }
+    },
+    {
+     "text": " @cycle_a.mwrite"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Meaning:",
+     "tags": {
+      "bold": true
+     }
+    },
+    {
+     "text": " @broken_ref.mwrite"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Goals:",
+     "tags": {
+      "bold": true
+     }
+    },
+    {
+     "text": " @blocked_ref.mwrite"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Respond:",
+     "tags": {
+      "bold": true
+     }
+    },
+    {
+     "text": " @notes.mstore"
+    }
+   ]
+  },
+  {
+   "indent": 1,
+   "runs": [
+    {
+     "text": "Info:",
+     "tags": {
+      "italic": "left"
+     }
+    },
+    {
+     "text": " @diamond_top.mwrite"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Understanding:",
+     "tags": {
+      "bold": true,
+      "spread": 3.0
+     }
+    },
+    {
+     "text": " @stub.mdoc"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Info:",
+     "tags": {
+      "bold": true
+     }
+    },
+    {
+     "text": " @stub.mprog"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Knowledge:",
+     "tags": {
+      "bold": true
+     }
+    },
+    {
+     "text": " the MAX_NODES valve demo is its own file: open fanout_demo.mwrite"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Goals:"
+    },
+    {
+     "text": " finish the draft",
+     "tags": {
+      "dash": true
+     }
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "this line is noise: prose is not an instruction",
+     "tags": {
+      "line": true
+     }
+    }
+   ]
+  }
+ ]
+}

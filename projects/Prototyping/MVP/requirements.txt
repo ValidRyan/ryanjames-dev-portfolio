@@ -1,0 +1,3 @@
+pytest
+python-docx
+PySide6

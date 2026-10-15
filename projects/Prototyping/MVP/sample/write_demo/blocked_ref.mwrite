@@ -1,0 +1,53 @@
+{
+ "version": 1,
+ "paragraphs": [
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "# Inert text: none of these paths is ever touched."
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Info: @../outside.txt"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Knowledge: @C:\\Windows\\win.ini"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Phrase: @\\\\host\\share\\x"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Limits: @notes.txt:hidden"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Meaning: @CON.txt"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,3 @@
+A .mprog file is a recognised special instruction.
+It is shown as raw text and never run.
+Info: @not_a_reference.txt   <- inert: nothing inside a Prog is parsed

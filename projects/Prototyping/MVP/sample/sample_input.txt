@@ -1,0 +1,3 @@
+This is the first paragraph of the sample document.
+It contains a second paragraph with some different text, used to verify verbatim extraction.
+Finally, this third paragraph closes out the sample content.

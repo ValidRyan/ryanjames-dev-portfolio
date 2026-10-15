@@ -1,0 +1,21 @@
+{
+ "version": 1,
+ "paragraphs": [
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "# chain_a -> chain_b -> chain_c -> ends_here.txt"
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Meaning: @chain_b.mwrite"
+    }
+   ]
+  }
+ ]
+}

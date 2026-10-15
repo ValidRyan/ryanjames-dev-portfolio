@@ -1,0 +1,27 @@
+{
+ "version": 1,
+ "paragraphs": [
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "# Opens a 3^k fan-out on purpose: the resolver stops at MAX_NODES (2000) and marks the node truncated."
+    }
+   ]
+  },
+  {
+   "indent": 0,
+   "runs": [
+    {
+     "text": "Knowledge:",
+     "tags": {
+      "bold": true
+     }
+    },
+    {
+     "text": " @fan_0.mwrite"
+    }
+   ]
+  }
+ ]
+}
