@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Four interactive browser adaptations exploring file transformation, operator relationships, content-aware folders, and structured writing.">
+  <link rel="icon" href="data:,">
+  <title>Prototype Lab · Interactive Systems Portfolio</title>
+  <style>
+    :root{color-scheme:dark;--bg:#070b12;--panel:#0d1420;--panel2:#121c2b;--panel3:#182437;--ink:#edf4ff;--muted:#8fa0b7;--line:#25344a;--line2:#354760;--cyan:#53d8fb;--blue:#7a8cff;--green:#6ee7b7;--amber:#f5c96a;--red:#fb7185;--accent:var(--cyan);--shadow:0 20px 70px #0006;--radius:18px;--mono:"Cascadia Code",Consolas,monospace}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--bg)}body{margin:0;min-height:100vh;background:radial-gradient(circle at 78% 12%,#53d8fb14,transparent 28rem),linear-gradient(135deg,#070b12,#09111c 52%,#070b12);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}button,input,select,textarea{font:inherit}button{color:inherit}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[contenteditable]:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+    .app{display:grid;grid-template-columns:280px minmax(0,1fr);min-height:100vh}.rail{position:sticky;top:0;height:100vh;padding:28px 20px;border-right:1px solid var(--line);background:#080d15ed;backdrop-filter:blur(20px);z-index:20;display:flex;flex-direction:column}.brand{display:flex;align-items:center;gap:12px;padding:0 8px 26px}.brand-mark{width:40px;height:40px;border:1px solid var(--line2);border-radius:13px;display:grid;place-items:center;background:#53d8fb15;font:700 15px var(--mono);color:var(--cyan)}.brand strong{display:block}.eyebrow{font:700 11px var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}.nav{display:grid;gap:7px}.nav button{border:1px solid transparent;background:transparent;text-align:left;padding:12px 13px;border-radius:12px;cursor:pointer;color:var(--muted);display:grid;grid-template-columns:28px 1fr;gap:8px}.nav button:hover,.nav button.active{background:var(--panel2);color:var(--ink)}.nav button.active{border-color:var(--line)}.nav-index{font:700 11px var(--mono);color:var(--accent)}.rail-foot{margin-top:auto;border-top:1px solid var(--line);padding:18px 8px 0;color:var(--muted);font-size:12px}.rail-foot a{color:var(--ink)}main{min-width:0}.topbar{display:none}.view{display:none;padding:42px clamp(22px,5vw,76px) 80px;max-width:1500px;margin:auto}.view.active{display:block}
+    .hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,.7fr);gap:38px;align-items:end;padding:42px 0 52px;border-bottom:1px solid var(--line)}.kicker{display:flex;align-items:center;gap:10px;color:var(--accent);font:700 12px var(--mono);letter-spacing:.13em;text-transform:uppercase}.kicker:before{content:"";width:34px;height:1px;background:var(--accent)}h1,h2,h3,p{margin-top:0}h1{font-size:clamp(46px,7vw,92px);line-height:.93;letter-spacing:-.055em;margin:24px 0}h2{font-size:clamp(30px,4vw,52px);line-height:1;letter-spacing:-.035em;margin-bottom:14px}h3{letter-spacing:-.015em}.lede{font-size:clamp(17px,2vw,22px);color:#b7c4d5;max-width:760px}.hero-note{border-left:2px solid var(--accent);padding:4px 0 4px 20px;color:var(--muted)}
+    .prototype-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:36px}.prototype-card{position:relative;overflow:hidden;text-align:left;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,var(--panel2),var(--panel));padding:28px;cursor:pointer;min-height:225px;box-shadow:var(--shadow)}.prototype-card:after{content:"";position:absolute;width:180px;height:180px;border:1px solid var(--card-accent);border-radius:50%;right:-95px;bottom:-105px;opacity:.25}.prototype-card:hover{transform:translateY(-3px);border-color:var(--card-accent)}.prototype-card small{color:var(--card-accent);font:700 11px var(--mono);letter-spacing:.14em}.prototype-card h3{font-size:25px;margin:28px 0 10px}.prototype-card p{color:var(--muted);margin:0}.card-arrow{position:absolute;right:24px;top:24px;color:var(--card-accent);font-size:22px}
+    .view-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;padding:22px 0 30px}.view-head p{color:var(--muted);max-width:720px;margin:0}.head-actions,.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.workspace{border:1px solid var(--line);background:#0d1420e0;border-radius:22px;box-shadow:var(--shadow);overflow:hidden}.workspace-bar{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;background:#121c2bbf}.status-dots{display:flex;gap:6px}.status-dots i{width:8px;height:8px;border-radius:50%;background:var(--line2)}.status-dots i:first-child{background:var(--red)}.status-dots i:nth-child(2){background:var(--amber)}.status-dots i:last-child{background:var(--green)}.browser-note{color:var(--muted);font:12px var(--mono)}.panel{padding:22px}.panel+.panel{border-top:1px solid var(--line)}
+    .btn{border:1px solid var(--line2);background:var(--panel2);border-radius:10px;padding:9px 13px;cursor:pointer;font-weight:650}.btn:hover{border-color:var(--accent);background:var(--panel3)}.btn.primary{background:var(--accent);border-color:var(--accent);color:#061018}.btn.danger{color:#ffc2cc}.btn.small{font-size:12px;padding:6px 9px}.btn[disabled]{opacity:.45;cursor:not-allowed}.field{display:grid;gap:7px}.field label,.label{font:700 11px var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}input[type=text],input[type=search],select,textarea{width:100%;border:1px solid var(--line2);background:#09111c;color:var(--ink);border-radius:10px;padding:10px 12px}textarea{resize:vertical;min-height:120px;font-family:var(--mono);line-height:1.55}input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}.control-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}.empty{border:1px dashed var(--line2);border-radius:14px;padding:32px;text-align:center;color:var(--muted)}.notice{display:flex;gap:10px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--muted);background:#09111c88;font-size:13px}.notice strong{color:var(--ink)}.file-list{display:grid;gap:12px;margin-top:18px}.file-row{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#09111c}.file-row-head{padding:10px 12px;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);font:12px var(--mono);color:var(--muted)}.file-row textarea{border:0;border-radius:0;min-height:150px;background:transparent}
+    .toast-stack{position:fixed;right:22px;bottom:22px;display:grid;gap:8px;z-index:100}.toast{max-width:390px;background:#121c2b;border:1px solid var(--line2);border-left:3px solid var(--accent);padding:12px 14px;border-radius:10px;box-shadow:var(--shadow);animation:toast-in .22s}.toast.error{border-left-color:var(--red)}@keyframes toast-in{from{opacity:0;transform:translateY(8px)}}
+    .canvas-wrap{padding:0}.canvas-toolbar{padding:14px;border-bottom:1px solid var(--line)}.operator-canvas{height:560px;position:relative;overflow:auto;background-color:#080f19;background-image:linear-gradient(#53d8fb0d 1px,transparent 1px),linear-gradient(90deg,#53d8fb0d 1px,transparent 1px);background-size:28px 28px}.wire-svg{position:absolute;inset:0;width:1600px;height:1000px;pointer-events:none}.wire-svg line{stroke:var(--line2);stroke-width:3}.wire-svg .pulse-wire{stroke:var(--cyan)}.wire-svg .mirror-pulse-wire{stroke:var(--blue);stroke-dasharray:8 5}.wire-svg .live-wire{stroke:var(--green);stroke-dasharray:3 5}.wire-svg .live-mirror-wire{stroke:var(--amber);stroke-width:4}.wire-svg .dead-wire{stroke:#566174;stroke-dasharray:2 8}.op-node{position:absolute;width:240px;border:1px solid var(--line2);border-radius:14px;background:#111b29;box-shadow:0 14px 35px #0006;overflow:hidden}.op-node.pending{outline:2px solid var(--accent)}.op-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;background:#182437;cursor:grab;user-select:none}.op-head strong{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.kind{font:700 10px var(--mono);color:var(--accent)}.op-node textarea{min-height:118px;border:0;border-radius:0;background:#0b121d;font-size:12px}.op-actions{display:flex;gap:6px;padding:8px;flex-wrap:wrap}.wire-list{display:grid;gap:8px}.wire-item{display:grid;grid-template-columns:minmax(160px,1fr) auto auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:11px;padding:9px 11px}.wire-toggles{display:flex;gap:7px;flex-wrap:wrap}.toggle{display:flex;gap:4px;align-items:center;font:11px var(--mono);color:var(--muted)}.toggle input{accent-color:var(--accent)}.shape-badge{font:700 10px var(--mono);color:var(--accent)}
+    .folder-layout{display:grid;grid-template-columns:320px minmax(0,1fr);min-height:600px}.folder-side{border-right:1px solid var(--line);padding:18px}.folder-main{padding:18px}.tree{list-style:none;padding:0;margin:0}.tree .tree{padding-left:22px}.tree-row{display:flex;align-items:center;gap:8px;min-height:34px;border-radius:8px;padding:3px 6px}.tree-row:hover{background:var(--panel2)}.tree-row.selected{background:#6ee7b71f;outline:1px solid #6ee7b752}.tree-label{border:0;background:transparent;text-align:left;cursor:pointer;min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tree-delete{border:0;background:transparent;color:var(--muted);cursor:pointer}.tree-delete:hover{color:var(--red)}.search-results{border:1px solid #6ee7b740;background:#6ee7b70d;border-radius:14px;padding:14px;margin-bottom:18px}.search-results h3{color:var(--green);font:13px var(--mono);text-transform:uppercase}.folder-path{font:12px var(--mono);color:var(--green);margin-bottom:12px}
+    .sap-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(340px,.95fr);min-height:680px}.sap-left{border-right:1px solid var(--line);min-width:0}.sap-toolbar{padding:12px;border-bottom:1px solid var(--line);display:flex;gap:6px;flex-wrap:wrap}.sap-editor{min-height:520px;padding:24px;font:15px/1.8 var(--mono);outline:0;background:#09111c;overflow:auto}.sap-line{min-height:1.8em;padding-left:calc(var(--indent,0) * 1.4rem);border-left:2px solid transparent;white-space:pre-wrap}.sap-line[data-kind=instruction]{border-left-color:var(--cyan)}.sap-line[data-kind=noise]{border-left-color:#f5c96a80}.sap-line[data-kind=comment]{color:#6f8299}.sap-right{display:grid;grid-template-rows:1fr 220px;min-width:0}.sap-tree-wrap,.sap-log-wrap{padding:16px;overflow:auto}.sap-tree-wrap{border-bottom:1px solid var(--line)}.sap-tree{font-size:12px}.sap-tree ul{list-style:none;margin:4px 0;padding-left:18px}.sap-tree li{margin:5px 0}.sap-node{display:flex;gap:8px;align-items:center}.state{font:700 9px var(--mono);text-transform:uppercase;padding:2px 5px;border-radius:4px;background:var(--panel3);color:var(--muted)}.state.ok{color:var(--green)}.state.blocked,.state.structural{color:var(--red)}.state.broken,.state.cycle,.state.truncated{color:var(--amber)}.sap-log{margin:0;white-space:pre-wrap;font:12px/1.55 var(--mono);color:#aec0d5}.sap-status{display:flex;gap:12px;flex-wrap:wrap;font:11px var(--mono);color:var(--muted)}.sap-status strong{color:var(--ink)}.library{display:grid;gap:6px;max-height:120px;overflow:auto;margin:10px 0}.library-item{display:flex;justify-content:space-between;gap:8px;font:11px var(--mono);border-bottom:1px solid var(--line);padding:4px}.embed-token{display:inline-block;border:1px solid var(--blue);background:#6f8cff26;border-radius:5px;padding:0 5px;color:#c6d0ff}.dash-text{text-decoration:line-through wavy}.spread-text{letter-spacing:.14em}.lean-left{display:inline-block;transform:skewX(12deg)}
+    dialog{border:1px solid var(--line2);border-radius:16px;background:var(--panel);color:var(--ink);padding:0;box-shadow:var(--shadow);width:min(430px,calc(100vw - 32px))}dialog::backdrop{background:#02060cb8;backdrop-filter:blur(4px)}.modal-body{padding:22px}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+    @media(max-width:980px){.app{grid-template-columns:1fr}.rail{display:none}.topbar{display:flex;position:sticky;top:0;z-index:30;overflow:auto;gap:6px;padding:10px;background:#080d15f0;border-bottom:1px solid var(--line)}.topbar button{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);padding:8px 10px;border-radius:9px}.topbar button.active{border-color:var(--accent)}.view{padding-top:24px}.hero{grid-template-columns:1fr}.folder-layout,.sap-layout{grid-template-columns:1fr}.folder-side,.sap-left{border-right:0;border-bottom:1px solid var(--line)}}
+    @media(max-width:680px){.view{padding-inline:14px}.prototype-grid{grid-template-columns:1fr}.view-head{align-items:flex-start;flex-direction:column}.control-grid{grid-template-columns:1fr}.panel{padding:14px}.operator-canvas{height:620px}.wire-item{grid-template-columns:1fr}.sap-right{grid-template-rows:420px 220px}.browser-note{display:none}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail" aria-label="Prototype navigation"><div class="brand"><div class="brand-mark">R/J</div><div><span class="eyebrow">Systems portfolio</span><strong>Prototype Lab</strong></div></div><nav class="nav" role="tablist"><button data-route="home" role="tab"><span class="nav-index">00</span>Overview</button><button data-route="file-recompiler" role="tab"><span class="nav-index">01</span>File Recompiler</button><button data-route="joint-interactor" role="tab"><span class="nav-index">02</span>Joint Interactor</button><button data-route="folder-replication" role="tab"><span class="nav-index">03</span>Folder Replication</button><button data-route="sap-modifier" role="tab"><span class="nav-index">04</span>SAP Modifier</button></nav><div class="rail-foot">Browser adaptations of four desktop prototypes. Processing stays on this device.<br><br><a href="./README.md">Portfolio overview ↗</a></div></aside>
+  <div class="topbar" role="tablist"><button data-route="home">Overview</button><button data-route="file-recompiler">Recompiler</button><button data-route="joint-interactor">Interactor</button><button data-route="folder-replication">Folders</button><button data-route="sap-modifier">SAP</button></div>
+  <main>
+    <section class="view" data-view="home" role="tabpanel"><div class="hero"><div><div class="kicker">Four ways to rethink files</div><h1>Systems you can<br>touch.</h1><p class="lede">A compact laboratory of working browser adaptations—built to make invisible relationships between files, processes, folders, and structured text visible.</p></div><p class="hero-note">Each prototype began as a schematic. These demos preserve the central interaction model while translating desktop file operations into safe, session-only browser behavior.</p></div><div class="prototype-grid"><button class="prototype-card" style="--card-accent:var(--cyan)" data-go="file-recompiler"><span class="card-arrow">↗</span><small>01 · TRANSFORM</small><h3>File Recompiler</h3><p>Route documents through explicit input, processing, and output stages.</p></button><button class="prototype-card" style="--card-accent:var(--blue)" data-go="joint-interactor"><span class="card-arrow">↗</span><small>02 · CONNECT</small><h3>Joint Interactor</h3><p>Place files as operators, wire relationships, and watch content move.</p></button><button class="prototype-card" style="--card-accent:var(--green)" data-go="folder-replication"><span class="card-arrow">↗</span><small>03 · SIEVE</small><h3>Folder Replication</h3><p>Organize and retrieve files by what they contain—not only their names.</p></button><button class="prototype-card" style="--card-accent:var(--amber)" data-go="sap-modifier"><span class="card-arrow">↗</span><small>04 · STRUCTURE</small><h3>SAP Modifier</h3><p>Shape schematics through signals, references, parameters, and scope.</p></button></div></section>
+    <section class="view" id="view-file-recompiler" data-view="file-recompiler" role="tabpanel"><div class="view-head"><div><div class="kicker">01 · Input → Midput → Output</div><h2>File Recompiler</h2><p>Repurpose the processing between source and result. Upload documents, transform them, edit the intermediate state, and export the outcome.</p></div><div class="head-actions"><button class="btn" id="fr-sample">Load samples</button><button class="btn" id="fr-reset">Reset</button></div></div><div class="workspace"><div class="workspace-bar"><div class="status-dots"><i></i><i></i><i></i></div><span class="browser-note">session://file-recompiler</span></div><div class="panel"><div class="control-grid"><div class="field"><label>A · Source files</label><label class="btn primary" for="fr-files">Choose .docx or text files</label><input id="fr-files" type="file" multiple accept=".docx,.txt,.md,.json,.csv"></div><div class="field"><label for="fr-ab">A → B instruction</label><select id="fr-ab"><option>Equivalate (==)</option><option>Calculate (=)</option><option disabled>Copy (//) · not implemented</option><option disabled>Paste (/) · not implemented</option><option disabled>Cut (-) · not implemented</option></select></div><button class="btn" id="fr-apply">Reapply A → B</button></div></div><div class="panel"><div class="notice"><span>ⓘ</span><div><strong>Browser adaptation.</strong> DOCX paragraph text is extracted locally. Tables remain out of scope.</div></div><div id="fr-list" class="file-list"></div></div><div class="panel"><div class="control-grid"><div class="field"><label for="fr-bc">B → C instruction</label><select id="fr-bc"><option>Calculate (=)</option><option>Equivalate (==)</option></select></div><button class="btn primary" id="fr-combined">Download combined .txt</button><button class="btn" id="fr-separate">Download separate .txt files</button></div></div></div></section>
+    <section class="view" id="view-joint-interactor" data-view="joint-interactor" role="tabpanel"><div class="view-head"><div><div class="kicker">02 · Files as operators</div><h2>Joint Interactor</h2><p>Build a visible process graph. Nodes hold file content; wires decide when and in which direction it moves.</p></div><div class="head-actions"><button class="btn" id="ji-sample">Load sample graph</button><button class="btn" id="ji-reset">Reset</button></div></div><div class="workspace canvas-wrap"><div class="workspace-bar"><div class="status-dots"><i></i><i></i><i></i></div><span class="browser-note" id="ji-status">Ready.</span></div><div class="canvas-toolbar toolbar"><label class="btn primary" for="ji-files">Add operators</label><input id="ji-files" type="file" multiple accept=".docx,.txt,.md,.json,.csv"><button class="btn" id="ji-connect" aria-pressed="false">Draw wire</button><span class="browser-note">Drag node headers · draw a wire by choosing two nodes</span></div><div class="operator-canvas" id="ji-canvas"><svg class="wire-svg" id="ji-svg" aria-hidden="true"></svg><div id="ji-nodes"></div></div><div class="panel"><h3>Wire controls</h3><div id="ji-wires" class="wire-list"></div></div></div></section>
+    <section class="view" id="view-folder-replication" data-view="folder-replication" role="tabpanel"><div class="view-head"><div><div class="kicker">03 · Content-aware hierarchy</div><h2>Folder Replication</h2><p>Construct a temporary file tree, then sieve it by filename or document content while preserving every matching path.</p></div><div class="head-actions"><button class="btn" id="fo-sample">Load sample store</button><button class="btn" id="fo-reset">Reset</button></div></div><div class="workspace"><div class="workspace-bar"><div class="status-dots"><i></i><i></i><i></i></div><span class="browser-note">memory://folder-replication</span></div><div class="folder-layout"><aside class="folder-side"><div class="field"><label for="fo-search">Live content sieve</label><input id="fo-search" type="search" placeholder="Search names and contents…"></div><div class="toolbar" style="margin-top:12px"><button class="btn small" id="fo-new">New folder</button><label class="btn small" for="fo-files">Add files</label><input id="fo-files" type="file" multiple accept=".docx,.txt,.md,.json,.csv"></div><div class="notice" style="margin-top:14px">New items go inside the selected folder. State is discarded on refresh.</div></aside><div class="folder-main"><div class="folder-path" id="fo-path">/</div><div id="fo-results"></div><h3>Complete store</h3><div id="fo-tree"></div></div></div></div></section>
+    <section class="view" id="view-sap-modifier" data-view="sap-modifier" role="tabpanel"><div class="view-head"><div><div class="kicker">04 · Signal · Arms · Parameters</div><h2>SAP Modifier</h2><p>A structured writing surface where eight instruction phrases, indentation, and safe references reveal the schematic inside a text document.</p></div><div class="head-actions"><button class="btn" id="sap-sample">Load demonstration</button><button class="btn" id="sap-reset">Reset</button></div></div><div class="workspace"><div class="workspace-bar"><div class="sap-status" id="sap-counts"></div><span class="browser-note" id="sap-message">Unsaved · session only</span></div><div class="sap-layout"><div class="sap-left"><div class="sap-toolbar"><button class="btn small" data-sap-cmd="bold"><b>B</b></button><button class="btn small" data-sap-cmd="line">Line</button><button class="btn small" data-sap-cmd="dash">Dash</button><button class="btn small" data-sap-cmd="italic">Italics</button><button class="btn small" data-sap-cmd="spread">Spread</button><button class="btn small" data-sap-cmd="narrow">Narrow</button><button class="btn small" data-sap-cmd="embed">Embed</button><button class="btn small" data-sap-cmd="unembed">Un-embed</button><button class="btn small" data-sap-cmd="indent">Indent</button><button class="btn small" data-sap-cmd="outdent">Outdent</button><button class="btn small primary" id="sap-run">Run</button></div><div id="sap-editor" class="sap-editor" contenteditable="true" spellcheck="true" aria-label="SAP structured text editor"></div></div><div class="sap-right"><div class="sap-tree-wrap"><div class="toolbar"><strong>Resolved structure</strong><label class="btn small" for="sap-library-files">Add files</label><input id="sap-library-files" type="file" multiple><label class="btn small" for="sap-library-folder">Add folder</label><input id="sap-library-folder" type="file" webkitdirectory multiple><button class="btn small" id="sap-save">Download .mwrite</button><label class="btn small" for="sap-open">Open .mwrite</label><input id="sap-open" type="file" accept=".mwrite,.json"></div><div class="library" id="sap-library"></div><div class="sap-tree" id="sap-tree"></div></div><div class="sap-log-wrap"><div class="label">Run log</div><pre class="sap-log" id="sap-log">Run log: press Run.</pre></div></div></div></div></section>
+  </main>
+</div>
+<div class="toast-stack" id="toasts" aria-live="polite"></div>
+<dialog id="text-dialog"><form method="dialog" class="modal-body"><h3 id="dialog-title">Enter a value</h3><div class="field"><label id="dialog-label" for="dialog-input">Name</label><input id="dialog-input" type="text"></div><div class="modal-actions"><button class="btn" id="dialog-cancel" type="button">Cancel</button><button class="btn primary" value="ok">Confirm</button></div></form></dialog>
+<script>
+'use strict';
+(function () {
+  const $ = (s, root) => (root || document).querySelector(s);
+  const $$ = (s, root) => Array.from((root || document).querySelectorAll(s));
+  const uid = (prefix) => prefix + '-' + Math.random().toString(36).slice(2, 9);
+  const esc = (value) => String(value == null ? '' : value).replace(/[&<>\"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[ch]));
+  const fileStem = (name) => String(name || 'output').replace(/\.[^.]+$/, '').replace(/[<>:\"/\\|?*\u0000-\u001f]/g, '_') || 'output';
+  const toast = (message, isError) => {
+    const el = document.createElement('div');
+    el.className = 'toast' + (isError ? ' error' : '');
+    el.textContent = message;
+    $('#toasts').appendChild(el);
+    setTimeout(() => el.remove(), 4200);
+  };
+  const download = (name, content, type) => {
+    const url = URL.createObjectURL(new Blob([content], {type: type || 'text/plain;charset=utf-8'}));
+    const link = document.createElement('a');
+    link.href = url; link.download = name; document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  };
+  const askText = (title, label, initial) => new Promise((resolve) => {
+    const dialog = $('#text-dialog'), input = $('#dialog-input');
+    $('#dialog-title').textContent = title; $('#dialog-label').textContent = label;
+    input.value = initial || '';
+    const close = () => { dialog.removeEventListener('close', close); resolve(dialog.returnValue === 'ok' ? input.value.trim() : null); };
+    dialog.addEventListener('close', close); dialog.showModal(); setTimeout(() => input.focus(), 0);
+  });
+  $('#dialog-cancel').onclick=()=>$('#text-dialog').close('cancel');
+
+  async function inflateRaw(bytes) {
+    if (!('DecompressionStream' in window)) throw new Error('This browser cannot decompress DOCX files. Try a current Chromium, Firefox, or Safari release.');
+    const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    return new Uint8Array(await new Response(stream).arrayBuffer());
+  }
+  async function docxText(file) {
+    const data = new Uint8Array(await file.arrayBuffer());
+    const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
+    let eocd = -1;
+    for (let i = data.length - 22; i >= Math.max(0, data.length - 65557); i--) {
+      if (view.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+    }
+    if (eocd < 0) throw new Error('Invalid DOCX container.');
+    const entries = view.getUint16(eocd + 10, true);
+    let offset = view.getUint32(eocd + 16, true), target = null;
+    const decoder = new TextDecoder('utf-8');
+    for (let i = 0; i < entries && offset + 46 <= data.length; i++) {
+      if (view.getUint32(offset, true) !== 0x02014b50) break;
+      const method = view.getUint16(offset + 10, true);
+      const compressed = view.getUint32(offset + 20, true);
+      const nameLength = view.getUint16(offset + 28, true);
+      const extraLength = view.getUint16(offset + 30, true);
+      const commentLength = view.getUint16(offset + 32, true);
+      const localOffset = view.getUint32(offset + 42, true);
+      const name = decoder.decode(data.slice(offset + 46, offset + 46 + nameLength));
+      if (name === 'word/document.xml') target = {method, compressed, localOffset};
+      offset += 46 + nameLength + extraLength + commentLength;
+    }
+    if (!target) throw new Error('word/document.xml was not found in this DOCX.');
+    const localName = view.getUint16(target.localOffset + 26, true);
+    const localExtra = view.getUint16(target.localOffset + 28, true);
+    const start = target.localOffset + 30 + localName + localExtra;
+    const packed = data.slice(start, start + target.compressed);
+    const xmlBytes = target.method === 0 ? packed : target.method === 8 ? await inflateRaw(packed) : null;
+    if (!xmlBytes) throw new Error('This DOCX uses an unsupported compression method.');
+    const xml = new DOMParser().parseFromString(decoder.decode(xmlBytes), 'application/xml');
+    if (xml.querySelector('parsererror')) throw new Error('The DOCX document XML is malformed.');
+    const paragraphs = Array.from(xml.getElementsByTagNameNS('*', 'p')).map((p) => {
+      let out = '';
+      p.querySelectorAll('*').forEach((n) => { if (n.localName === 't') out += n.textContent; else if (n.localName === 'tab') out += '\t'; else if (n.localName === 'br' || n.localName === 'cr') out += '\n'; });
+      return out;
+    });
+    return paragraphs.join('\n');
+  }
+  async function readFile(file) {
+    if (/\.docx$/i.test(file.name)) return docxText(file);
+    return file.text();
+  }
+
+  const routes = {
+    home: {title:'Prototype Lab', accent:'#53d8fb'},
+    'file-recompiler': {title:'File Recompiler', accent:'#53d8fb'},
+    'joint-interactor': {title:'Joint Interactor', accent:'#8b9cff'},
+    'folder-replication': {title:'Folder Replication', accent:'#6ee7b7'},
+    'sap-modifier': {title:'SAP Modifier', accent:'#ffbf69'}
+  };
+  $$('.view').forEach((view) => { if (!view.id) view.id='view-'+view.dataset.view; view.tabIndex=0; });
+  $$('[data-route]').forEach((tab,index) => { tab.id='route-'+tab.dataset.route+'-'+index; tab.setAttribute('role','tab'); tab.setAttribute('aria-controls','view-'+tab.dataset.route); });
+  $$('.view').forEach((view) => { const label=$('.rail [data-route="'+view.dataset.view+'"]'); if(label)view.setAttribute('aria-labelledby',label.id); });
+  function route() {
+    const key = location.hash.replace(/^#\/?/, '') || 'home';
+    const active = routes[key] ? key : 'home';
+    document.documentElement.style.setProperty('--accent', routes[active].accent);
+    document.title = routes[active].title + ' — Ryan James Prototype Lab';
+    $$('.view').forEach((v) => { const on=v.dataset.view===active; v.classList.toggle('active',on); v.setAttribute('aria-hidden',String(!on)); });
+    $$('[data-route]').forEach((b) => { const on = b.dataset.route === active; b.classList.toggle('active', on); b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; });
+    if (active === 'joint-interactor') renderJoint();
+    window.scrollTo({top:0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  }
+  $$('[data-go]').forEach((el) => el.addEventListener('click', () => { location.hash = el.dataset.go === 'home' ? '#home' : '#' + el.dataset.go; }));
+  $$('[data-route]').forEach((el) => el.addEventListener('keydown', (e) => {
+    if (!['ArrowDown','ArrowRight','ArrowUp','ArrowLeft'].includes(e.key)) return;
+    e.preventDefault(); const tabs = $$('[data-route]',el.closest('[role=tablist]')); const step = /Down|Right/.test(e.key) ? 1 : -1;
+    tabs[(tabs.indexOf(el) + step + tabs.length) % tabs.length].focus();
+  }));
+  addEventListener('hashchange', route);
+
+  function arithmetic(source) {
+    let at = 0; const input = String(source).trim();
+    const fail = (message) => { throw new Error(message + ' near character ' + (at + 1)); };
+    const space = () => { while (/\s/.test(input[at] || '')) at++; };
+    const number = () => { space(); const match = input.slice(at).match(/^(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?/i); if (!match) fail('Expected a number'); at += match[0].length; return Number(match[0]); };
+    const primary = () => { space(); if (input[at] === '(') { at++; const v = sum(); space(); if (input[at++] !== ')') fail('Expected )'); return v; } return number(); };
+    const unary = () => { space(); if (input[at] === '+') { at++; return unary(); } if (input[at] === '-') { at++; return -unary(); } return power(); };
+    const power = () => { let left = primary(); space(); if (input.slice(at, at + 2) === '**') { at += 2; const exponent = unary(); if (Math.abs(exponent) > 1000) throw new Error('Exponent is too large.'); left = Math.pow(left, exponent); } return left; };
+    const product = () => { let left = unary(); while (true) { space(); let op = ''; if (input.slice(at, at + 2) === '//') op = '//'; else if (input[at] === '*' && input[at + 1] !== '*') op = '*'; else if (input[at] === '/' || input[at] === '%') op = input[at]; else break; at += op.length; const right = unary(); if ((op === '/' || op === '//' || op === '%') && right === 0) throw new Error('Division by zero.'); left = op === '*' ? left * right : op === '/' ? left / right : op === '//' ? Math.floor(left / right) : left % right; } return left; };
+    const sum = () => { let left = product(); while (true) { space(); const op = input[at]; if (op !== '+' && op !== '-') break; at++; const right = product(); left = op === '+' ? left + right : left - right; } return left; };
+    if (!input) throw new Error('Nothing to calculate.'); const value = sum(); space(); if (at !== input.length) fail('Unexpected input'); if (!Number.isFinite(value)) throw new Error('Result is not finite.'); return String(Number(value.toPrecision(15)));
+  }
+  const transform = (text, instruction) => instruction.startsWith('Calculate') ? arithmetic(text) : text;
+
+  const fr = {files:new Map()};
+  function renderFR() {
+    const list = $('#fr-list');
+    if (!fr.files.size) { list.innerHTML = '<div class="empty">No sources loaded. Add plain text or DOCX files, or load the sample pair.</div>'; return; }
+    list.innerHTML = Array.from(fr.files.values()).map((item) => '<article class="file-row" data-id="' + item.id + '"><div class="file-row-head"><span>' + esc(item.name) + ' · editable midput</span><button class="btn small danger" data-fr-delete="' + item.id + '">Remove</button></div><textarea aria-label="Editable midput for ' + esc(item.name) + '">' + esc(item.mid) + '</textarea></article>').join('');
+    $$('[data-fr-delete]', list).forEach((b) => b.onclick = () => { fr.files.delete(b.dataset.frDelete); renderFR(); });
+    $$('.file-row', list).forEach((row) => row.querySelector('textarea').addEventListener('input', (e) => { fr.files.get(row.dataset.id).mid = e.target.value; }));
+  }
+  async function addFR(files) {
+    for (const file of files) {
+      if (Array.from(fr.files.values()).some((x) => x.name.toLowerCase() === file.name.toLowerCase())) { toast(file.name + ' was skipped: duplicate name.', true); continue; }
+      try { const raw = await readFile(file), id=uid('fr'); fr.files.set(id, {id, name:file.name, raw, mid:transform(raw, $('#fr-ab').value)}); }
+      catch (e) { toast(file.name + ': ' + e.message, true); }
+    }
+    renderFR();
+  }
+  $('#fr-files').onchange = (e) => { addFR(e.target.files); e.target.value = ''; };
+  $('#fr-apply').onclick = () => { fr.files.forEach((x) => { try { x.mid = transform(x.raw, $('#fr-ab').value); } catch (e) { x.mid = 'Calculation error: ' + e.message; } }); renderFR(); };
+  $('#fr-sample').onclick = () => { fr.files.clear(); const a=uid('fr'), b=uid('fr'); fr.files.set(a,{id:a,name:'project-cost.txt',raw:'(1200 + 450) * 1.16',mid:'(1200 + 450) * 1.16'}); fr.files.set(b,{id:b,name:'architecture-note.txt',raw:'Input becomes an editable intermediate state before export.',mid:'Input becomes an editable intermediate state before export.'}); renderFR(); };
+  $('#fr-reset').onclick = () => { fr.files.clear(); renderFR(); toast('File Recompiler reset.'); };
+  function frOutput(item) { try { return transform(item.mid, $('#fr-bc').value); } catch (e) { return 'Calculation error: ' + e.message; } }
+  $('#fr-combined').onclick = () => { if (!fr.files.size) return toast('Load at least one file first.', true); download('recompiled-output.txt', Array.from(fr.files.values()).map((x) => '=== ' + x.name + ' ===\n' + frOutput(x)).join('\n\n')); };
+  $('#fr-separate').onclick = () => { if (!fr.files.size) return toast('Load at least one file first.', true); fr.files.forEach((x, i) => setTimeout(() => download(fileStem(x.name) + '-recompiled.txt', frOutput(x)), i * 120)); };
+  renderFR();
+
+  const ji = {nodes:new Map(), wires:new Map(), connect:false, pending:null, transaction:0};
+  const wireShape = (w) => w.off ? 'dead' : w.on ? (w.bi ? 'live-mirror' : 'live') : (w.bi ? 'mirror-pulse' : 'pulse');
+  function setJointStatus(text) { $('#ji-status').textContent = text; }
+  function addNode(name, content, x, y, kind) {
+    const id = uid('node'); ji.nodes.set(id, {id, name, content, x:x == null ? 70 + ji.nodes.size * 35 : x, y:y == null ? 60 + ji.nodes.size * 34 : y, kind:kind || (/\.docx$/i.test(name) ? 'DOCX' : 'TEXT')}); return id;
+  }
+  function renderWires() {
+    const svg = $('#ji-svg'); svg.innerHTML = '<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="context-stroke"/></marker></defs>';
+    ji.wires.forEach((w) => {
+      const a = ji.nodes.get(w.from), b = ji.nodes.get(w.to); if (!a || !b) return;
+      const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1', a.x + 120); line.setAttribute('y1', a.y + 82); line.setAttribute('x2', b.x + 120); line.setAttribute('y2', b.y + 82);
+      line.setAttribute('class', wireShape(w) + '-wire');
+      if (wireShape(w) !== 'dead') line.setAttribute('marker-end','url(#arrow)');
+      if (w.bi && !w.off) line.setAttribute('marker-start','url(#arrow)');
+      svg.appendChild(line);
+    });
+    const list = $('#ji-wires');
+    if (!ji.wires.size) { list.innerHTML = '<div class="empty">No wires yet. Select Draw wire, then choose a source and target node.</div>'; return; }
+    list.innerHTML = Array.from(ji.wires.values()).map((w) => {
+      const a=ji.nodes.get(w.from), b=ji.nodes.get(w.to);
+      const checks = ['on','off','uni','bi','once'].map((key) => '<label class="toggle"><input type="checkbox" data-wire="' + w.id + '" data-toggle="' + key + '" ' + (w[key]?'checked':'') + '> ' + (key==='once'?'One-shot':key[0].toUpperCase()+key.slice(1)) + '</label>').join('');
+      return '<div class="wire-item"><span>' + esc(a?a.name:'missing') + ' → ' + esc(b?b.name:'missing') + '<br><span class="shape-badge">' + wireShape(w) + '</span></span><div class="wire-toggles">' + checks + '</div><button class="btn small danger" data-wire-delete="' + w.id + '">Delete</button></div>';
+    }).join('');
+    $$('[data-toggle]', list).forEach((input) => input.onchange = () => { const w=ji.wires.get(input.dataset.wire); if (!w) return; w[input.dataset.toggle]=input.checked; renderWires(); if (w.on && !w.off) propagate(w.from, w.id); });
+    $$('[data-wire-delete]', list).forEach((b) => b.onclick = () => { ji.wires.delete(b.dataset.wireDelete); renderWires(); });
+  }
+  function propagate(startId, onlyWire) {
+    const tx = ++ji.transaction, seen = new Set();
+    const walk = (nodeId, content) => {
+      ji.wires.forEach((w) => {
+        if (onlyWire && !seen.size && w.id !== onlyWire) return;
+        if (seen.has(w.id) || w.off) return;
+        const shape=wireShape(w), live=shape==='live'||shape==='live-mirror', pulse=shape==='pulse'||shape==='mirror-pulse';
+        if (!live && !pulse) return;
+        let target=null;
+        if (w.from===nodeId) target=w.to; else if (w.bi && w.to===nodeId) target=w.from;
+        if (!target || !ji.nodes.has(target)) return;
+        seen.add(w.id); const node=ji.nodes.get(target); node.content=content;
+        if (live && tx===ji.transaction) walk(target, content);
+      });
+    };
+    const source=ji.nodes.get(startId); if (source) walk(startId, source.content);
+    $$('.op-node', $('#ji-nodes')).forEach((el) => { const n=ji.nodes.get(el.dataset.node); const area=el.querySelector('textarea'); if(n&&document.activeElement!==area) area.value=n.content; });
+    renderWires();
+  }
+  function chooseJointNode(id) {
+    if (!ji.connect) return;
+    if (!ji.pending) { ji.pending=id; setJointStatus('Source selected. Choose a different target.'); renderJoint(); return; }
+    if (ji.pending===id) { setJointStatus('A node cannot be wired to itself. Choose another target.'); return; }
+    if (!ji.nodes.has(ji.pending) || !ji.nodes.has(id)) { ji.pending=null; setJointStatus('The selected node no longer exists. Start again.'); renderJoint(); return; }
+    const wireId=uid('wire'); ji.wires.set(wireId,{id:wireId,from:ji.pending,to:id,on:false,off:false,uni:false,bi:false,once:false});
+    ji.pending=null; ji.connect=false; $('#ji-connect').setAttribute('aria-pressed','false'); setJointStatus('Wire created. Bare wires produce one forward pulse.'); renderJoint();
+  }
+  function bindDrag(nodeEl, node) {
+    const head=nodeEl.querySelector('.op-head');
+    head.onpointerdown=(e) => {
+      if (e.target.closest('button')) return; e.preventDefault(); head.setPointerCapture(e.pointerId);
+      const sx=e.clientX, sy=e.clientY, ox=node.x, oy=node.y;
+      const move=(event) => { node.x=Math.max(0,ox+event.clientX-sx); node.y=Math.max(0,oy+event.clientY-sy); nodeEl.style.left=node.x+'px'; nodeEl.style.top=node.y+'px'; renderWires(); };
+      const up=() => { head.removeEventListener('pointermove',move); head.removeEventListener('pointerup',up); };
+      head.addEventListener('pointermove',move); head.addEventListener('pointerup',up);
+    };
+  }
+  function renderJoint() {
+    const host=$('#ji-nodes'); if (!host) return;
+    host.innerHTML=Array.from(ji.nodes.values()).map((n) => '<article class="op-node ' + (ji.pending===n.id?'pending':'') + '" data-node="' + n.id + '" style="left:' + n.x + 'px;top:' + n.y + 'px"><div class="op-head"><strong>' + esc(n.name) + '</strong><span class="kind">' + esc(n.kind) + '</span></div><textarea aria-label="Content for ' + esc(n.name) + '">' + esc(n.content) + '</textarea><div class="op-actions"><button class="btn small" data-node-pick="' + n.id + '">' + (ji.connect?'Select':'Wire') + '</button><button class="btn small primary" data-node-run="' + n.id + '">Run</button><button class="btn small" data-node-export="' + n.id + '">Export</button><button class="btn small danger" data-node-delete="' + n.id + '">Delete</button></div></article>').join('');
+    $$('.op-node',host).forEach((el) => {
+      const n=ji.nodes.get(el.dataset.node); bindDrag(el,n);
+      el.querySelector('textarea').oninput=(e) => { n.content=e.target.value; ji.wires.forEach((w) => { if (w.on && !w.off && (w.from===n.id || (w.bi&&w.to===n.id))) propagate(n.id,w.id); }); };
+    });
+    $$('[data-node-pick]',host).forEach((b) => b.onclick=() => { if (!ji.connect) { ji.connect=true; ji.pending=b.dataset.nodePick; $('#ji-connect').setAttribute('aria-pressed','true'); setJointStatus('Source selected. Choose a different target.'); renderJoint(); } else chooseJointNode(b.dataset.nodePick); });
+    $$('[data-node-run]',host).forEach((b) => b.onclick=() => { propagate(b.dataset.nodeRun); setJointStatus('Forward pulse dispatched from ' + ji.nodes.get(b.dataset.nodeRun).name + '.'); });
+    $$('[data-node-export]',host).forEach((b) => b.onclick=() => { const n=ji.nodes.get(b.dataset.nodeExport); download(fileStem(n.name)+'-output.txt',n.content); });
+    $$('[data-node-delete]',host).forEach((b) => b.onclick=() => { const id=b.dataset.nodeDelete; ji.nodes.delete(id); ji.wires.forEach((w,k) => {if(w.from===id||w.to===id)ji.wires.delete(k);}); if(ji.pending===id)ji.pending=null; renderJoint(); });
+    renderWires();
+  }
+  $('#ji-connect').onclick=() => { ji.connect=!ji.connect; ji.pending=null; $('#ji-connect').setAttribute('aria-pressed',String(ji.connect)); setJointStatus(ji.connect?'Connect mode: choose a source, then a target.':'Connect mode cancelled.'); renderJoint(); };
+  $('#ji-files').onchange=async(e) => { for(const file of e.target.files){ try{addNode(file.name,await readFile(file));}catch(err){toast(file.name+': '+err.message,true);} } e.target.value=''; renderJoint(); };
+  $('#ji-sample').onclick=() => { ji.nodes.clear();ji.wires.clear(); const a=addNode('brief.txt','Make complexity legible.',70,70),b=addNode('process.txt','Awaiting input.',390,230),c=addNode('result.txt','Awaiting output.',720,90); const w1=uid('wire'),w2=uid('wire');ji.wires.set(w1,{id:w1,from:a,to:b,on:true,off:false,uni:true,bi:false,once:false});ji.wires.set(w2,{id:w2,from:b,to:c,on:false,off:false,uni:false,bi:true,once:true});renderJoint();setJointStatus('Sample graph loaded. Edit the first node to see live flow.'); };
+  $('#ji-reset').onclick=() => {ji.nodes.clear();ji.wires.clear();ji.connect=false;ji.pending=null;$('#ji-connect').setAttribute('aria-pressed','false');renderJoint();setJointStatus('Ready.');toast('Joint Interactor reset.');};
+  renderJoint();
+  const makeFolder=(name) => ({id:uid('folder'),type:'folder',name,children:[]});
+  const fo={root:makeFolder('Portfolio Store'),selected:null,open:new Set(),query:''};
+  fo.selected=fo.root.id; fo.open.add(fo.root.id);
+  function findTree(node,id,parent) { if(node.id===id)return {node,parent}; if(node.type==='folder')for(const child of node.children){const hit=findTree(child,id,node);if(hit)return hit;} return null; }
+  function folderPath(id) { const parts=[]; const seek=(node) => {if(node.id===id){parts.push(node.name);return true;} if(node.type==='folder')for(const c of node.children)if(seek(c)){parts.unshift(node.name);return true;} return false;};seek(fo.root);return '/'+parts.join('/'); }
+  function treeHTML(node, resultMode) {
+    if(node.type==='file') return '<li><div class="tree-row"><span>▤</span><span class="tree-label" title="' + esc(node.name) + '">' + esc(node.name) + '</span>' + (resultMode?'':'<button class="tree-delete" data-fo-delete="'+node.id+'" aria-label="Delete '+esc(node.name)+'">×</button>') + '</div></li>';
+    const isOpen=resultMode||fo.open.has(node.id), selected=fo.selected===node.id;
+    return '<li><div class="tree-row '+(selected&&!resultMode?'selected':'')+'"><button class="tree-delete" data-fo-toggle="'+node.id+'" aria-label="'+(isOpen?'Collapse':'Expand')+' '+esc(node.name)+'">'+(isOpen?'▾':'▸')+'</button><button class="tree-label" data-fo-select="'+node.id+'">📁 '+esc(node.name)+'</button>'+(node===fo.root||resultMode?'':'<button class="tree-delete" data-fo-delete="'+node.id+'" aria-label="Delete '+esc(node.name)+'">×</button>')+'</div>'+(isOpen?'<ul class="tree">'+node.children.map((c)=>treeHTML(c,resultMode)).join('')+'</ul>':'')+'</li>';
+  }
+  function pruneTree(node,q) {
+    if(node.type==='file') return (node.name+'\n'+node.content).toLowerCase().includes(q)?node:null;
+    const children=node.children.map((c)=>pruneTree(c,q)).filter(Boolean);
+    return children.length?{id:node.id,type:'folder',name:node.name,children}:null;
+  }
+  function bindFolderTree(root) {
+    $$('[data-fo-toggle]',root).forEach((b)=>b.onclick=()=>{fo.open.has(b.dataset.foToggle)?fo.open.delete(b.dataset.foToggle):fo.open.add(b.dataset.foToggle);renderFolder();});
+    $$('[data-fo-select]',root).forEach((b)=>b.onclick=()=>{fo.selected=b.dataset.foSelect;fo.open.add(fo.selected);renderFolder();});
+    $$('[data-fo-delete]',root).forEach((b)=>b.onclick=()=>{const hit=findTree(fo.root,b.dataset.foDelete);if(!hit||!hit.parent)return;hit.parent.children=hit.parent.children.filter((x)=>x.id!==hit.node.id);if(findTree(hit.node,fo.selected)){fo.selected=hit.parent.id;}renderFolder();});
+  }
+  function renderFolder() {
+    const full=$('#fo-tree');full.innerHTML='<ul class="tree">'+treeHTML(fo.root,false)+'</ul>';bindFolderTree(full);
+    $('#fo-path').textContent=folderPath(fo.selected);
+    const q=$('#fo-search').value.trim().toLowerCase(), results=$('#fo-results');
+    if(!q){results.innerHTML='<div class="notice"><strong>Content sieve idle.</strong> Type a term to produce a separate, pruned result tree.</div>';return;}
+    const pruned=pruneTree(fo.root,q);
+    results.innerHTML='<section class="search-results"><h3>Sieve result · '+esc(q)+'</h3>'+(pruned?'<ul class="tree">'+treeHTML(pruned,true)+'</ul>':'<div class="empty">No filenames or extracted contents match.</div>')+'</section>';
+  }
+  async function addFolderFiles(files) {
+    const hit=findTree(fo.root,fo.selected), folder=hit&&hit.node.type==='folder'?hit.node:fo.root;
+    for(const file of files){try{folder.children.push({id:uid('file'),type:'file',name:file.name,content:await readFile(file),file});}catch(err){toast(file.name+': '+err.message,true);}}
+    fo.open.add(folder.id);renderFolder();
+  }
+  $('#fo-search').oninput=renderFolder;
+  $('#fo-new').onclick=async()=>{const name=await askText('Create a folder','Folder name','Untitled folder');if(!name)return;const hit=findTree(fo.root,fo.selected),folder=hit&&hit.node.type==='folder'?hit.node:fo.root;if(folder.children.some((x)=>x.type==='folder'&&x.name.toLowerCase()===name.toLowerCase()))return toast('That folder name already exists here.',true);const child=makeFolder(name);folder.children.push(child);fo.open.add(folder.id);fo.selected=child.id;fo.open.add(child.id);renderFolder();};
+  $('#fo-files').onchange=(e)=>{addFolderFiles(e.target.files);e.target.value='';};
+  $('#fo-sample').onclick=()=>{fo.root=makeFolder('Portfolio Store');const research=makeFolder('Research'),builds=makeFolder('Builds'),notes=makeFolder('Accessibility');research.children.push({id:uid('file'),type:'file',name:'content-sieve.txt',content:'Search by extracted document content and retain the path.',file:null});notes.children.push({id:uid('file'),type:'file',name:'computer-literacy.md',content:'Reduce friction for people learning file systems and digital tools.',file:null});builds.children.push({id:uid('file'),type:'file',name:'prototype-log.txt',content:'The prototype met the expectations described in its schematic.',file:null});research.children.push(notes);fo.root.children.push(research,builds);fo.selected=fo.root.id;fo.open=new Set([fo.root.id,research.id,notes.id,builds.id]);$('#fo-search').value='';renderFolder();};
+  $('#fo-reset').onclick=()=>{fo.root=makeFolder('Portfolio Store');fo.selected=fo.root.id;fo.open=new Set([fo.root.id]);$('#fo-search').value='';renderFolder();toast('Folder Replication reset.');};
+  renderFolder();
+  const SAP_WORDS=['Phrase','Limits','Meaning','Goals','Respond','Understanding','Info','Knowledge'];
+  const sap={library:new Map(),modified:0,log:[]};
+  function sapLine(text,indent){const el=document.createElement('div');el.className='sap-line';el.dataset.indent=String(indent||0);el.style.setProperty('--indent',indent||0);el.textContent=text||'';if(!text)el.appendChild(document.createElement('br'));return el;}
+  function setSapLines(lines){const ed=$('#sap-editor');ed.innerHTML='';(lines&&lines.length?lines:[{text:'',indent:0}]).forEach((x)=>ed.appendChild(sapLine(x.text,Math.max(0,Number(x.indent)||0))));parseSAP(false);}
+  function sapLines(){
+    const ed=$('#sap-editor'), direct=Array.from(ed.children).filter((x)=>x.classList.contains('sap-line'));
+    if(direct.length)return direct.map((el)=>({el,text:el.textContent.replace(/\u200b/g,''),indent:Math.max(0,Number(el.dataset.indent)||0)}));
+    const raw=(ed.innerText||'').split(/\r?\n/);setSapLines(raw.map((text)=>({text,indent:0})));return sapLines();
+  }
+  function classify(text){const value=text.trim();if(!value)return 'blank';if(/^\s*(#|\/\/)/.test(value))return 'comment';if(SAP_WORDS.some((w)=>new RegExp('^'+w+'(?:\\s*:|\\s+|$)','i').test(value)))return 'instruction';return 'noise';}
+  function refTokens(text){const refs=[];let match;const pattern=/\[(?:ref|reference)\s*:\s*([^\]]+)\]|@ref\s+([^\s]+)/gi;while((match=pattern.exec(text)))refs.push((match[1]||match[2]||'').trim());return refs;}
+  function safeReference(raw,base){
+    const value=String(raw||'').replace(/\\/g,'/').trim();
+    if(!value)return {state:'blocked',message:'empty reference'};
+    if(/^\/{1,2}|^[a-z]:/i.test(value))return {state:'blocked',message:'absolute, drive, and UNC paths are blocked'};
+    if(/[<>:\"|?*\u0000-\u001f]/.test(value))return {state:'blocked',message:'illegal path character'};
+    const parts=(base?base.split('/').slice(0,-1):[]).concat(value.split('/')),out=[];
+    for(const part of parts){if(!part||part==='.')continue;if(part==='..')return {state:'blocked',message:'path traversal is blocked'};if(/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(part))return {state:'blocked',message:'reserved device name'};out.push(part);}
+    return {state:'ok',path:out.join('/')};
+  }
+  function inferRefs(entry){
+    if(!entry)return {refs:[],structural:false};
+    if(/\.mwrite$/i.test(entry.path)){
+      try{const parsed=JSON.parse(entry.content),lines=Array.isArray(parsed.lines)?parsed.lines:null;if(!lines)return {refs:[],structural:true};return {refs:lines.flatMap((x)=>refTokens(typeof x==='string'?x:x.text||'')),structural:false};}catch(e){return {refs:[],structural:true};}
+    }
+    if(/\.(mstore|mdoc|mprog)$/i.test(entry.path)){
+      try{const parsed=JSON.parse(entry.content);const refs=[];const scan=(v)=>{if(typeof v==='string')refs.push(...refTokens(v));else if(Array.isArray(v))v.forEach(scan);else if(v&&typeof v==='object')Object.values(v).forEach(scan);};scan(parsed);return {refs,structural:false};}catch(e){return {refs:refTokens(entry.content),structural:false};}
+    }
+    return {refs:refTokens(entry.content),structural:false};
+  }
+  function resolveRef(raw,base,trail,budget){
+    if(budget.count++>=200)return {label:raw,state:'truncated',children:[]};
+    const safe=safeReference(raw,base);if(safe.state!=='ok')return {label:raw,state:'blocked',note:safe.message,children:[]};
+    const key=safe.path.toLowerCase();if(trail.has(key))return {label:safe.path,state:'cycle',children:[]};
+    const entry=sap.library.get(key);if(!entry)return {label:safe.path,state:'broken',children:[]};
+    const detail=inferRefs(entry);if(detail.structural)return {label:entry.path,state:'structural',note:'invalid document structure',children:[]};
+    const next=new Set(trail);next.add(key);return {label:entry.path,state:'ok',children:detail.refs.map((r)=>resolveRef(r,entry.path,next,budget))};
+  }
+  function sapTreeHTML(node){return '<li><div class="sap-node"><span>'+esc(node.label)+'</span><span class="state '+node.state+'">'+node.state+'</span>'+(node.note?'<span title="'+esc(node.note)+'">ⓘ</span>':'')+'</div>'+(node.children&&node.children.length?'<ul>'+node.children.map(sapTreeHTML).join('')+'</ul>':'')+'</li>';}
+  function buildScope(lines){
+    const root={label:'Document scope',state:'ok',children:[]},stack=[{indent:-1,node:root}],diagnostics=[];
+    lines.forEach((line,index)=>{
+      const kind=classify(line.text);line.el.dataset.kind=kind;
+      if(index&&line.indent>lines[index-1].indent+1)diagnostics.push('Line '+(index+1)+': indent jumps from '+lines[index-1].indent+' to '+line.indent+'.');
+      if(index&&line.indent>lines[index-1].indent&&['blank','comment'].includes(classify(lines[index-1].text)))diagnostics.push('Line '+(index+1)+': invalid parent on the previous line.');
+      while(stack.length>1&&stack[stack.length-1].indent>=line.indent)stack.pop();
+      const node={label:(line.text.trim()||'(blank line)'),state:kind,children:[]};
+      stack[stack.length-1].node.children.push(node);stack.push({indent:line.indent,node});
+    });return {root,diagnostics};
+  }
+  function renderLibrary(){const host=$('#sap-library');if(!sap.library.size){host.innerHTML='<div class="notice">Reference library empty. Add files or a folder to resolve embedded arms.</div>';return;}host.innerHTML=Array.from(sap.library.values()).map((e)=>'<div class="library-item"><span>'+esc(e.path)+'</span><button class="tree-delete" data-sap-lib-delete="'+esc(e.key)+'" aria-label="Remove '+esc(e.path)+'">×</button></div>').join('');$$('[data-sap-lib-delete]',host).forEach((b)=>b.onclick=()=>{sap.library.delete(b.dataset.sapLibDelete);renderLibrary();parseSAP(false);});}
+  function parseSAP(changed){
+    const lines=sapLines(),counts={instruction:0,noise:0,comment:0};lines.forEach((l)=>{const k=classify(l.text);if(counts[k]!=null)counts[k]++;l.el.dataset.kind=k;l.el.style.setProperty('--indent',l.indent);});if(changed)sap.modified++;
+    $('#sap-counts').innerHTML='<span>Clarity <strong>'+counts.instruction+'</strong></span><span>Noise <strong>'+counts.noise+'</strong></span><span>Comment <strong>'+counts.comment+'</strong></span><span>Modifications <strong>'+sap.modified+'</strong></span>';
+    $('#sap-message').textContent=(sap.modified?'Modified':'Clean')+' · session only';
+    const scope=buildScope(lines), refs=lines.flatMap((l)=>refTokens(l.text)), budget={count:0};
+    let html='<ul>'+sapTreeHTML(scope.root)+'</ul>';
+    if(refs.length)html+='<div class="label" style="margin-top:14px">Reference arms</div><ul>'+refs.map((r)=>sapTreeHTML(resolveRef(r,'',new Set(),budget))).join('')+'</ul>';
+    if(scope.diagnostics.length)html+='<div class="notice" style="margin-top:12px">'+scope.diagnostics.map(esc).join('<br>')+'</div>';
+    $('#sap-tree').innerHTML=html;
+  }
+  function currentSapLine(){const sel=getSelection();if(!sel.rangeCount)return null;let node=sel.anchorNode;while(node&&node!==$('#sap-editor')){if(node.nodeType===1&&node.classList.contains('sap-line'))return node;node=node.parentNode;}return null;}
+  function wrapSelection(className){const sel=getSelection();if(!sel.rangeCount||sel.isCollapsed)return toast('Select text in the editor first.',true);const range=sel.getRangeAt(0);if(!$('#sap-editor').contains(range.commonAncestorContainer))return;const span=document.createElement('span');span.className=className;try{range.surroundContents(span);sel.removeAllRanges();const next=document.createRange();next.selectNodeContents(span);sel.addRange(next);parseSAP(true);}catch(e){toast('Select text within a single formatted segment.',true);}}
+  function insertAtSelection(node){const sel=getSelection();if(!sel.rangeCount||!$('#sap-editor').contains(sel.anchorNode))return toast('Place the cursor in the editor first.',true);const range=sel.getRangeAt(0);range.deleteContents();range.insertNode(node);range.setStartAfter(node);range.collapse(true);sel.removeAllRanges();sel.addRange(range);parseSAP(true);}
+  async function sapCommand(cmd){
+    $('#sap-editor').focus();
+    if(cmd==='bold'){document.execCommand('bold');parseSAP(true);}
+    else if(cmd==='line'){document.execCommand('underline');parseSAP(true);}
+    else if(cmd==='dash')wrapSelection('dash-text');
+    else if(cmd==='italic'){document.execCommand('italic');parseSAP(true);}
+    else if(cmd==='spread')wrapSelection('spread-text');
+    else if(cmd==='narrow'){const line=currentSapLine();if(line)line.querySelectorAll('.spread-text').forEach((x)=>x.replaceWith(...x.childNodes));parseSAP(true);}
+    else if(cmd==='embed'){const selection=getSelection(),saved=selection.rangeCount&&$('#sap-editor').contains(selection.anchorNode)?selection.getRangeAt(0).cloneRange():null;const path=await askText('Embed a reference','Safe relative path','notes/example.mdoc');if(path&&saved){selection.removeAllRanges();selection.addRange(saved);const span=document.createElement('span');span.className='embed-token';span.contentEditable='false';span.textContent='[ref: '+path+']';insertAtSelection(span);}else if(path)toast('Place the cursor in the editor before embedding.',true);}
+    else if(cmd==='unembed'){const sel=getSelection(),anchor=sel.anchorNode&&sel.anchorNode.nodeType===3?sel.anchorNode.parentElement:sel.anchorNode;const token=anchor&&anchor.closest?anchor.closest('.embed-token'):null;if(token){token.replaceWith(document.createTextNode(token.textContent));parseSAP(true);}else toast('Place the cursor on an embedded reference.',true);}
+    else if(cmd==='indent'||cmd==='outdent'){const line=currentSapLine();if(!line)return toast('Place the cursor on a line first.',true);const value=Math.max(0,(Number(line.dataset.indent)||0)+(cmd==='indent'?1:-1));line.dataset.indent=value;line.style.setProperty('--indent',value);parseSAP(true);}
+  }
+  $$('[data-sap-cmd]').forEach((b)=>b.onclick=()=>sapCommand(b.dataset.sapCmd));
+  $('#sap-editor').addEventListener('input',()=>parseSAP(true));
+  $('#sap-editor').addEventListener('paste',(e)=>{e.preventDefault();document.execCommand('insertText',false,e.clipboardData.getData('text/plain'));});
+  $('#sap-editor').addEventListener('keydown',(e)=>{
+    if(e.key==='Tab'){e.preventDefault();sapCommand(e.shiftKey?'outdent':'indent');return;}
+    if(e.key==='Enter'){e.preventDefault();const line=currentSapLine(),indent=line?Number(line.dataset.indent)||0:0;const next=sapLine('',indent);if(line)line.after(next);else $('#sap-editor').appendChild(next);const range=document.createRange();range.setStart(next,0);range.collapse(true);const sel=getSelection();sel.removeAllRanges();sel.addRange(range);parseSAP(true);}
+  });
+  async function addLibraryFiles(files){for(const file of files){try{const path=(file.webkitRelativePath||file.name).replace(/\\/g,'/'),key=path.toLowerCase();sap.library.set(key,{key,path,content:await file.text(),file});}catch(e){toast(file.name+': '+e.message,true);}}renderLibrary();parseSAP(false);}
+  $('#sap-library-files').onchange=(e)=>{addLibraryFiles(e.target.files);e.target.value='';};
+  $('#sap-library-folder').onchange=(e)=>{addLibraryFiles(e.target.files);e.target.value='';};
+  $('#sap-save').onclick=()=>{const payload={version:1,type:'mwrite',lines:sapLines().map((x)=>({text:x.text,indent:x.indent}))};download('schematic.mwrite',JSON.stringify(payload,null,2),'application/json');sap.modified=0;parseSAP(false);toast('Simplified .mwrite downloaded.');};
+  $('#sap-open').onchange=async(e)=>{const file=e.target.files[0];e.target.value='';if(!file)return;try{const data=JSON.parse(await file.text());if(data.version!==1||!Array.isArray(data.lines))throw new Error('Expected a version 1 document with a lines array.');setSapLines(data.lines.map((x)=>typeof x==='string'?{text:x,indent:0}:{text:String(x.text||''),indent:Math.max(0,Number(x.indent)||0)}));sap.modified=0;parseSAP(false);toast(file.name+' opened.');}catch(err){toast('Could not open .mwrite: '+err.message,true);}};
+  $('#sap-run').onclick=()=>{const instructions=sapLines().filter((x)=>classify(x.text)==='instruction');sap.log=instructions.length?instructions.map((x,i)=>(i+1)+'. '+x.text.trim()+' — not implemented yet'):['No instruction keywords found.'];$('#sap-log').textContent=sap.log.join('\n');};
+  $('#sap-sample').onclick=()=>{sap.library.clear();const refDoc={version:1,type:'mwrite',lines:[{text:'Info: Supporting constraints',indent:0},{text:'[ref: loop.mwrite]',indent:1}]};const loopDoc={version:1,type:'mwrite',lines:[{text:'Knowledge: Circular example',indent:0},{text:'[ref: ../blocked.mdoc]',indent:1},{text:'[ref: references.mwrite]',indent:1}]};sap.library.set('references.mwrite',{key:'references.mwrite',path:'references.mwrite',content:JSON.stringify(refDoc)});sap.library.set('loop.mwrite',{key:'loop.mwrite',path:'loop.mwrite',content:JSON.stringify(loopDoc)});setSapLines([{text:'Phrase: Turn a loose idea into a project schematic',indent:0},{text:'Goals: Make system relationships explicit',indent:1},{text:'Meaning: Parameters guide the structure',indent:1},{text:'[ref: references.mwrite]',indent:2},{text:'// This comment remains outside execution',indent:1},{text:'Ordinary signal text for the working draft.',indent:0},{text:'Respond: Review the current scope',indent:0}]);sap.modified=0;renderLibrary();parseSAP(false);$('#sap-log').textContent='Run log: press Run.';};
+  $('#sap-reset').onclick=()=>{sap.library.clear();sap.modified=0;sap.log=[];setSapLines([{text:'',indent:0}]);renderLibrary();$('#sap-log').textContent='Run log: press Run.';toast('SAP Modifier reset.');};
+  setSapLines([{text:'Phrase: Start with an instruction',indent:0},{text:'Write plain signal text here, or Embed a safe relative reference.',indent:1}]);sap.modified=0;renderLibrary();parseSAP(false);
+
+  route();
+})();
+</script>
+</body>
+</html>
